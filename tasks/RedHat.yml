@@ -1,0 +1,27 @@
+---
+# task file to install/update/configure ntp on RHEL/CentOS
+
+- name: YUM | Ensure certbot is installed and up-to-date
+  become: true
+  become_user: root
+  yum:
+    name:
+      - certbot
+      - python-certbot-dns-cloudflare
+    state: present
+
+- name: TEMPLATE | Template the credentials file
+  become: true
+  become_user: root
+  template:
+    src: credentials.j2
+    dest: /root/cf_credentials
+    owner: root
+    group: root
+    mode: 'u=rw,g=,o='
+
+- name: SHELL | Fetch/Renew Certificate
+  become: true
+  become_user: root
+  shell: 'certbot certonly --non-interactive --agree-tos --email {{ certbot_cert_email }} --dns-cloudflare --dns-cloudflare-credentials /root/cf_credentials --cert-name {{ inventory_hostname }}{% for item in certbot_cert_cn %} -d {{ item }}{% endfor %}'
+  register: task_result

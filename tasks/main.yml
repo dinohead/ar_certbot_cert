@@ -1,0 +1,4 @@
+---
+
+- name: Install tools and request certificate -> {{ ansible_os_family }}
+  include: "{{ ansible_os_family }}.yml"

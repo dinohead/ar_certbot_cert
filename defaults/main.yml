@@ -1,0 +1,5 @@
+---
+certbot_cert_email: "user@domain.com"
+certbot_cert_api: "9evhYYewsxFawuq8fhycXeRfW4xJgLC4SsP7d"
+certbot_cert_cn:
+  - "{{ inventory_hostname }}"
